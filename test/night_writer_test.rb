@@ -14,9 +14,9 @@ class NightWriterTest < Minitest::Test
     @night_writer.reader.stubs(:input).returns("message.txt")
     @night_writer.reader.stubs(:output).returns("braille.txt")
 
-    assert_equal "Hello Turing!\n", @night_writer.file_input
+    assert_equal "Hello Turing!\n", @night_writer.reader.reader
     assert_equal 14, @night_writer.character_count(:input)
-    assert_equal "Hello Turing!\n", @night_writer.file_output
+    assert_equal "Hello Turing!\n", @night_writer.reader.writer
     assert_equal 14, @night_writer.character_count(:output)
   end
 
