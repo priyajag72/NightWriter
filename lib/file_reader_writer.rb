@@ -25,4 +25,9 @@ class FileReaderWriter
     File.open("./#{output}", "w") { |out_file| out_file.write(reader) }
     File.open(input) { |file| file.read() }
   end
+
+  def output_character_count
+    text = File.readlines(output).join
+    text.length
+  end
 end
