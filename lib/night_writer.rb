@@ -8,14 +8,6 @@ class NightWriter
     @reader = FileReaderWriter.new
   end
 
-  # def file_input  # ONLY FOR ATTRIBUTE TESTING
-  #   @reader.reader
-  # end
-  #
-  # def file_output # ONLY FOR ATTRIBUTE TESTING
-  #   @reader.writer
-  # end
-
   def character_count(io)
     case
       when :input
