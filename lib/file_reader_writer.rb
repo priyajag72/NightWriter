@@ -15,4 +15,14 @@ class FileReaderWriter
     text = File.readlines(input).join
     text.length
   end
+
+  def creator
+    File.new("./#{output}", "w")
+  end
+
+  def writer
+    creator
+    File.open("./#{output}", "w") { |out_file| out_file.write(reader) }
+    File.open(input) { |file| file.read() }
+  end
 end
