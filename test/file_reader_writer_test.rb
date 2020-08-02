@@ -14,6 +14,6 @@ class FileReaderWriterTest < Minitest::Test
     @file.stubs(:input).returns("message.txt")
 
     assert_equal "Hello Turing!\n", @file.reader
-    assert_equal 13, @file.input_character_count
+    assert_equal 14, @file.input_character_count
   end
 end
