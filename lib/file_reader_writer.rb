@@ -10,4 +10,9 @@ class FileReaderWriter
   def reader
     File.open(input) { |file| file.read() }
   end
+
+  def input_character_count
+    text = File.readlines(input).join
+    text.length
+  end
 end
