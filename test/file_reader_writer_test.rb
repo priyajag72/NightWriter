@@ -16,4 +16,13 @@ class FileReaderWriterTest < Minitest::Test
     assert_equal "Hello Turing!\n", @file.reader
     assert_equal 14, @file.input_character_count
   end
+
+  def test_it_can_write_a_new_file_and_copy_from_input
+    @file.stubs(:input).returns("message.txt")
+    @file.stubs(:output).returns("braille.txt")
+
+    assert_equal File, @file.creator.class
+    assert_equal "Hello Turing!\n", @file.writer
+    assert_equal 14, @file.output_character_count
+  end
 end
