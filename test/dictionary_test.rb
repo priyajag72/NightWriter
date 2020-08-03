@@ -31,13 +31,16 @@ class DictionaryTest < Minitest::Test
     a = Matrix[["0","."],[".","."],[".","."]]
     assert_equal a, @dictionary.convert(1)
 
+    c = Matrix[["0","0"],[".","."],[".","."]]
+    assert_equal c, @dictionary.convert(14)
+
     q = Matrix[["0","0"],["0","0"],["0","."]]
     assert_equal q, @dictionary.convert(12345)
   end
 
   def test_it_can_convert_braille_matrix_to_string
-    assert_equal "0.....", @dictionary.convert_braille_to_string["a"]
-    assert_equal "0000..", @dictionary.convert_braille_to_string["g"]
+    assert_equal "0.....", @dictionary.convert_braille_matrix_to_string["a"]
+    assert_equal "0000..", @dictionary.convert_braille_matrix_to_string["g"]
   end
 
 end
