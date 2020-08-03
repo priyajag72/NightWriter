@@ -27,4 +27,9 @@ class DictionaryTest < Minitest::Test
     assert_equal 1346, @dictionary.convert_csv_to_hash["x"]
   end
 
+  def test_it_can_convert_braille_matrix_to_string
+    assert_equal "0.....", @dictionary.convert_braille_to_string["a"]
+    assert_equal "0000..", @dictionary.convert_braille_to_string["g"]
+  end
+
 end
