@@ -16,6 +16,7 @@ class Dictionary
     eng_and_brl_dots_integer_hash = Hash.new
     CSV.foreach(@file_location, headers: false) do |row|
       eng_and_brl_dots_integer_hash[row[0]] = row[1].to_i
+      eng_and_brl_dots_integer_hash[row[0]] = row[1]
     end
     eng_and_brl_dots_integer_hash
   end
@@ -23,6 +24,9 @@ class Dictionary
   def convert(integer)
     integer_array = integer.digits
     integer_array.each do |number|
+  def convert(braille_integer_value)
+    braille_integer_value_array = braille_integer_value.split(//)
+    braille_integer_value_array.each do |number|
       helper(number)
     end
     @braille_board
@@ -30,6 +34,8 @@ class Dictionary
 
   def helper(integer)
     case integer
+  def helper(character)
+    case character
       when 1
         @braille_board[0,0] = "0"
       when 2
