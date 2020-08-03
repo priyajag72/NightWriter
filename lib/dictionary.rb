@@ -1,13 +1,6 @@
 require_relative "file_reader_writer"
-
-require 'matrix'
+require_relative "matrix"
 require 'csv'
-
-class Matrix
-  def []=(i, j, x)
-    @rows[i][j] = x
-  end
-end
 
 class Dictionary
 
@@ -69,6 +62,55 @@ class Dictionary
     text
   end
 
+  def encode(text)
+    convert_braille_matrix_to_string.each do |k,v|
+      text.gsub!(k, v)
+    end
+    text.gsub!(" ", "SPACEE")
+    text.gsub!("\n", "NEWLNE")
+    convert_to_cell_row1_to_row3(text)
+  end
 
+  def convert_to_cell_row1_to_row3(text)
+    by_char = text.scan(/.{6}/)
+    @row1 = ""
+    @row2 = ""
+    @row3 = ""
+    by_char.each do |char|
+      if char == "SPACEE"
+        space_allocation
+      elsif char == "NEWLNE"
+        newline_allocation
+      else
+        character_allocation(char)
+      end
+    end
+    print_character
+  end
+
+  def character_allocation(char)
+    @row1 += char[0]+char[1]
+    @row2 += char[2]+char[3]
+    @row3 += char[4]+char[5]
+  end
+
+  def space_allocation
+    @row1 += "  "
+    @row2 += "  "
+    @row3 += "  "
+  end
+
+  def newline_allocation
+    @row1 += "\n"
+    @row2 += "\n"
+    @row3 += "\n"
+  end
+
+  def print_character
+    puts @row1
+    puts @row2
+    puts @row3
+    return [@row1, @row2, @row3]
+  end
 
 end
