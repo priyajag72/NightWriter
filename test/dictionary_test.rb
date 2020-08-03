@@ -24,6 +24,7 @@ class DictionaryTest < Minitest::Test
 
   def test_it_can_convert_csv_to_braille_dots_integer_hash
     assert_equal 1, @dictionary.convert_csv_to_hash["a"]
+    assert_equal 1346, @dictionary.convert_csv_to_hash["x"]
   end
 
 end
