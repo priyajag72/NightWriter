@@ -27,6 +27,14 @@ class DictionaryTest < Minitest::Test
     assert_equal 1346, @dictionary.convert_csv_to_hash["x"]
   end
 
+  def test_it_can_convert_a_braille_board_from_dots_to_zeros
+    a = Matrix[["0","."],[".","."],[".","."]]
+    assert_equal a, @dictionary.convert(1)
+
+    q = Matrix[["0","0"],["0","0"],["0","."]]
+    assert_equal q, @dictionary.convert(12345)
+  end
+
   def test_it_can_convert_braille_matrix_to_string
     assert_equal "0.....", @dictionary.convert_braille_to_string["a"]
     assert_equal "0000..", @dictionary.convert_braille_to_string["g"]
