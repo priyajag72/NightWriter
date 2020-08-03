@@ -22,8 +22,8 @@ class DictionaryTest < Minitest::Test
     assert_equal 13, @dictionary.reader.input_character_count
   end
 
-  def test_it_can
-
+  def test_it_can_convert_csv_to_braille_dots_integer_hash
+    assert_equal 1, @dictionary.convert_csv_to_hash["a"]
   end
 
 end
