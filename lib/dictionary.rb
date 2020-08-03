@@ -1,3 +1,5 @@
+require_relative "file_reader_writer"
+
 require 'matrix'
 require 'csv'
 
@@ -9,7 +11,11 @@ end
 
 class Dictionary
 
+  attr_reader :file_location, :reader
+
   def initialize(file_location)
     @file_location = file_location
+    @reader = FileReaderWriter.new
   end
+
 end
