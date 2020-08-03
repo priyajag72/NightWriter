@@ -20,10 +20,11 @@ class FileReaderWriter
     File.new("./#{output}", "w")
   end
 
-  def writer
+  def writer(argument)
     creator
-    File.open("./#{output}", "w") { |out_file| out_file.write(reader) }
-    File.open(input) { |file| file.read() }
+    File.open("./#{output}", "w") do |out_file|
+      out_file.puts argument
+    end
   end
 
   def output_character_count
