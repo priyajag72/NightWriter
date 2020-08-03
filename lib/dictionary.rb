@@ -16,7 +16,7 @@ class Dictionary
   def initialize(file_location)
     @file_location = file_location
     @reader = FileReaderWriter.new
-    @blank_three_by_two = Matrix[[".","."],[".","."],[".","."]]
+    @braille_board = Matrix[[".","."],[".","."],[".","."]]
   end
 
   def convert_csv_to_hash
@@ -30,34 +30,36 @@ class Dictionary
   def convert(integer)
     integer_array = integer.digits
     integer_array.each do |number|
-      case number
-        when 1
-          @blank_three_by_two[0,0] = "0"
-        when 2
-          @blank_three_by_two[1,0] = "0"
-        when 3
-          @blank_three_by_two[2,0] = "0"
-        when 4
-          @blank_three_by_two[0,1] = "0"
-        when 5
-          @blank_three_by_two[1,1] = "0"
-        when 6
-          @blank_three_by_two[2,1] = "0"
-      end
+      helper(number)
     end
-    @blank_three_by_two
+    @braille_board
   end
 
-  # def convert_braille_to_string
-  #   braille_matrix_to_string = Hash.new
-  #   convert_csv_to_hash.each do |english_letter, braille_matrix|
-  #     braille_board = Matrix[[".","."],[".","."],[".","."]]
-  #     x = convert(braille_matrix).to_s.gsub(/Matrix|\[|\]|\,/, "").delete(" ")
-  #     braille_matrix_to_string[english_letter] = x
-  #   end
-  #   braille_matrix_to_string
-  # end
+  def helper(integer)
+    case integer
+      when 1
+        @braille_board[0,0] = "0"
+      when 2
+        @braille_board[1,0] = "0"
+      when 3
+        @braille_board[2,0] = "0"
+      when 4
+        @braille_board[0,1] = "0"
+      when 5
+        @braille_board[1,1] = "0"
+      when 6
+        @braille_board[2,1] = "0"
+    end
+  end
 
-
+  def convert_braille_matrix_to_string
+    lowercase_to_dot_hash = Hash.new
+    convert_csv_to_hash.each do |key, value|
+      @braille_board = Matrix[[".","."],[".","."],[".","."]]
+      x = convert(value).to_s.gsub(/Matrix|\[|\]|\,/, "").delete(" ")
+      lowercase_to_dot_hash[key] = x
+    end
+    lowercase_to_dot_hash
+  end
 
 end
