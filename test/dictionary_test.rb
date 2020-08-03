@@ -1,5 +1,4 @@
 # Capital letters just have a dot6 before the character or a double dot6 before the word
-# "./dictionary/lowercase_to_international_braille.csv"
 
 require_relative "test_helper"
 
@@ -13,4 +12,12 @@ class DictionaryTest < Minitest::Test
   def test_it_exists
     assert_instance_of Dictionary, @dictionary
   end
+
+  def test_it_has_attributes
+    # assert_equal "./dictionary/lowercase_to_international_braille.csv", @dictionary.file_location
+
+    @dictionary.reader.stubs(:input).returns("message.txt")
+    assert_equal FileReaderWriter, @dictionary.reader.class
+  end
+
 end
