@@ -43,4 +43,9 @@ class DictionaryTest < Minitest::Test
     assert_equal "0000..", @dictionary.convert_braille_matrix_to_string["g"]
   end
 
+  def test_it_can_use_dictionary_with_one_method
+    assert_equal "0000..", @dictionary.convert_text_english_to_braille("g")
+    assert_equal "0.....0000..", @dictionary.convert_text_english_to_braille("ag")
+  end
+
 end
