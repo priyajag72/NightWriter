@@ -48,4 +48,8 @@ class DictionaryTest < Minitest::Test
     assert_equal "0.....0000..", @dictionary.convert_text_english_to_braille("ag")
   end
 
+  def test_it_can_encode_connected_to_night_writer
+    assert_equal ["0.0.0.0.0.", "00.00.0..0", "....0.0.0."], @dictionary.encode("hello")
+  end
+
 end
