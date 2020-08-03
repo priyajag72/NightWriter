@@ -62,4 +62,13 @@ class Dictionary
     lowercase_to_dot_hash
   end
 
+  def convert_text_english_to_braille(text)
+    convert_braille_matrix_to_string.each do |character, braille_string|
+      text.gsub!(character, braille_string)
+    end
+    text
+  end
+
+
+
 end
