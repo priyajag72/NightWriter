@@ -19,37 +19,11 @@ class Dictionary
     @braille_board = Matrix[[".","."],[".","."],[".","."]]
   end
 
-  def convert_csv_to_hash
-    eng_and_brl_dots_integer_hash = Hash.new
-    CSV.foreach(@file_location, headers: false) do |row|
-      eng_and_brl_dots_integer_hash[row[0]] = row[1].to_i
+  def convert_text_english_to_braille(text)
+    convert_braille_matrix_to_string.each do |character, braille_string|
+      text.gsub!(character, braille_string)
     end
-    eng_and_brl_dots_integer_hash
-  end
-
-  def convert(integer)
-    integer_array = integer.digits
-    integer_array.each do |number|
-      helper(number)
-    end
-    @braille_board
-  end
-
-  def helper(integer)
-    case integer
-      when 1
-        @braille_board[0,0] = "0"
-      when 2
-        @braille_board[1,0] = "0"
-      when 3
-        @braille_board[2,0] = "0"
-      when 4
-        @braille_board[0,1] = "0"
-      when 5
-        @braille_board[1,1] = "0"
-      when 6
-        @braille_board[2,1] = "0"
-    end
+    text
   end
 
   def convert_braille_matrix_to_string
@@ -62,13 +36,44 @@ class Dictionary
     lowercase_to_dot_hash
   end
 
-  def convert_text_english_to_braille(text)
-    convert_braille_matrix_to_string.each do |character, braille_string|
-      text.gsub!(character, braille_string)
+  def convert_csv_to_hash
+    eng_and_brl_dots_integer_hash = Hash.new
+    CSV.foreach(@file_location, headers: false) do |row|
+      eng_and_brl_dots_integer_hash[row[0]] = row[1]
     end
-    text
+    eng_and_brl_dots_integer_hash
   end
 
+  def convert(braille_integer_value)
+    braille_integer_value_array = braille_integer_value.split(//)
+    braille_integer_value_array.each do |number|
+      helper(number)
+    end
+    @braille_board
+  end
 
+  def helper(character)
+    case character
+      when " "
+        @braille_board[0,0] = " "
+        @braille_board[1,0] = " "
+        @braille_board[2,0] = " "
+        @braille_board[0,1] = " "
+        @braille_board[1,1] = " "
+        @braille_board[2,1] = " "
+      when "1"
+        @braille_board[0,0] = "0"
+      when "2"
+        @braille_board[1,0] = "0"
+      when "3"
+        @braille_board[2,0] = "0"
+      when "4"
+        @braille_board[0,1] = "0"
+      when "5"
+        @braille_board[1,1] = "0"
+      when "6"
+        @braille_board[2,1] = "0"
+    end
+  end
 
 end
