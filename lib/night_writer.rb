@@ -29,9 +29,17 @@ class NightWriter < Dictionary
   end
 
   def confirmation_message
-    @reader.creator
-    @reader.writer
     "Created '#{@reader.output}' containing #{character_count(:output)} characters"
+  end
+
+  def encode_to_braille
+    message = @reader.reader
+    low = @lower_dictionary
+    braille_conversion = low.encode(message)
+    # does this just encode for each kinda of dictionary and then write the final?? If so, that's suuuuper cool
+    @reader.writer(braille_conversion)
+    return confirmation_message
+    # require "pry"; binding.pry
   end
 
 end
