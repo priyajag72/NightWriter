@@ -26,9 +26,7 @@ class NightReaderTest < Minitest::Test
   def test_it_can_convert_back_to_english
     @night_reader.reader.stubs(:input).returns("braille.txt")
     @night_reader.reader.stubs(:output).returns("message.txt")
-
-    # assert_equal "Created 'message.txt' containing 414 characters", @night_reader.encode_to_english
-    assert_equal "hello i am going for forty characters\nhere so i am happy with seventy\n", @night_reader.encode_to_english
+    assert_equal "Created 'message.txt' containing 414 characters", @night_reader.encode_to_english
   end
 
 end
