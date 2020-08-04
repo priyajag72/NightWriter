@@ -1,5 +1,5 @@
-# require_relative "file_reader_writer"
-# require_relative "dictionary"
+require_relative "file_reader_writer"
+require_relative "dictionary"
 
 class NightReader
 
@@ -40,5 +40,11 @@ class NightReader
     message = @reader.reader
     low = @lower_dictionary
     conversion = low.encode(message)
+    @reader.writer(conversion)
+    return confirmation_message
   end
 end
+
+x = NightReader.new
+x.encode_to_english
+puts x.confirmation_message

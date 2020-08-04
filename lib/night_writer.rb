@@ -1,7 +1,5 @@
+require_relative "file_reader_writer"
 require_relative "dictionary"
-# require_relative "file_reader_writer"
-# require_relative "matrix"
-
 
 class NightWriter < Dictionary
 
@@ -41,13 +39,12 @@ class NightWriter < Dictionary
     message = @reader.reader
     low = @lower_dictionary
     braille_conversion = low.encode(message)
-    # does this just encode for each kinda of dictionary and then write the final?? If so, that's suuuuper cool
     @reader.writer(braille_conversion)
     return confirmation_message
   end
 
 end
-#
-# x = NightWriter.new
-# x.encode_to_braille
-# puts x.confirmation_message
+
+x = NightWriter.new
+x.encode_to_braille
+puts x.confirmation_message
