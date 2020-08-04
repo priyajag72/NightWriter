@@ -22,4 +22,23 @@ class NightReader
     @punctuation_dictionary = Dictionary.new(punctuation)
     @numbers_dictionary = Dictionary.new(numbers)
   end
+
+  def character_count(io)
+    case
+      when :input
+        @reader.input_character_count
+      when :output
+        @reader.output_character_count
+    end
+  end
+
+  def confirmation_message
+    "Created '#{@reader.output}' containing #{character_count(:output)} characters"
+  end
+
+  def encode_to_english
+    message = @reader.reader
+    low = @lower_dictionary
+    conversion = low.encode(message)
+  end
 end
