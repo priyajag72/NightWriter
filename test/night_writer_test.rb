@@ -16,21 +16,7 @@ class NightWriterTest < Minitest::Test
 
     assert_equal "hello i am going for forty characters\nhere so i am happy with seventy\n", @night_writer.reader.reader
     assert_equal 70, @night_writer.character_count(:input)
-    # assert_equal "hello turing\n", @night_writer.reader.writer(input)
-    # Needs updates after file_reader_writer_updates_for_final_encoding_of_braille
     assert_equal 70, @night_writer.character_count(:output)
-  end
-
-  def test_it_can_print_to_terminal_io_confirmation_message
-    @night_writer.reader.stubs(:input).returns("message.txt")
-    @night_writer.reader.stubs(:output).returns("braille.txt")
-
-    assert_equal "Created 'braille.txt' containing 70 characters", @night_writer.confirmation_message
-  end
-
-  def test_it_inherited_Dictionary_Class
-    assert_equal "0000..", @night_writer.lower_dictionary.convert_text_english_to_braille("g")
-    assert_equal "0.....0000..", @night_writer.lower_dictionary.convert_text_english_to_braille("ag")
   end
 
   def test_it_can_print_braille_characters_correctly
