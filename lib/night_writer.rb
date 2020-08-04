@@ -1,11 +1,27 @@
+require_relative "dictionary"
 require_relative "file_reader_writer"
+require_relative "matrix"
 
-class NightWriter
 
-  attr_reader :reader
+class NightWriter < Dictionary
+
+  attr_reader :reader,
+              :lower_dictionary,
+              :upper_dictionary,
+              :punctuation_dictionary,
+              :numbers_dictionary
 
   def initialize
     @reader = FileReaderWriter.new
+    lowercase = "./dictionary/lowercase_to_international_braille.csv"
+    uppercase = "./dictionary/uppercase_to_international_braille.csv"
+    punctuation = "./dictionary/punctuation_to_international_braille.csv"
+    numbers = "./dictionary/numbers_to_international_braille.csv"
+
+    @lower_dictionary = Dictionary.new(lowercase)
+    @upper_dictionary = Dictionary.new(uppercase)
+    @punctuation_dictionary = Dictionary.new(punctuation)
+    @numbers_dictionary = Dictionary.new(numbers)
   end
 
   def character_count(io)
@@ -18,12 +34,20 @@ class NightWriter
   end
 
   def confirmation_message
-    @reader.creator
-    @reader.writer
     "Created '#{@reader.output}' containing #{character_count(:output)} characters"
+  end
+
+  def encode_to_braille
+    message = @reader.reader
+    low = @lower_dictionary
+    braille_conversion = low.encode(message)
+    # does this just encode for each kinda of dictionary and then write the final?? If so, that's suuuuper cool
+    @reader.writer(braille_conversion)
+    return confirmation_message
   end
 
 end
 
 x = NightWriter.new
+x.encode_to_braille
 puts x.confirmation_message
