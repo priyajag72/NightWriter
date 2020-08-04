@@ -28,7 +28,6 @@ class FileReaderWriter
   end
 
   def output_character_count
-    writer
     text = File.readlines(output).join
     text.length
   end
