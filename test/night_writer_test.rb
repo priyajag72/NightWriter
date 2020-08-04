@@ -14,18 +14,18 @@ class NightWriterTest < Minitest::Test
     @night_writer.reader.stubs(:input).returns("message.txt")
     @night_writer.reader.stubs(:output).returns("braille.txt")
 
-    assert_equal "hello turing\n", @night_writer.reader.reader
-    assert_equal 13, @night_writer.character_count(:input)
+    assert_equal "hello i am going for forty characters\nhere so i am happy with seventy\n", @night_writer.reader.reader
+    assert_equal 70, @night_writer.character_count(:input)
     # assert_equal "hello turing\n", @night_writer.reader.writer(input)
     # Needs updates after file_reader_writer_updates_for_final_encoding_of_braille
-    assert_equal 13, @night_writer.character_count(:output)
+    assert_equal 70, @night_writer.character_count(:output)
   end
 
   def test_it_can_print_to_terminal_io_confirmation_message
     @night_writer.reader.stubs(:input).returns("message.txt")
     @night_writer.reader.stubs(:output).returns("braille.txt")
 
-    assert_equal "Created 'braille.txt' containing 13 characters", @night_writer.confirmation_message
+    assert_equal "Created 'braille.txt' containing 70 characters", @night_writer.confirmation_message
   end
 
   def test_it_inherited_Dictionary_Class
@@ -37,7 +37,7 @@ class NightWriterTest < Minitest::Test
     @night_writer.reader.stubs(:input).returns("message.txt")
     @night_writer.reader.stubs(:output).returns("braille.txt")
 
-    assert_equal "Created 'braille.txt' containing 13 characters", @night_writer.encode_to_braille
+    assert_equal "Created 'braille.txt' containing 70 characters", @night_writer.encode_to_braille
   end
 
 end
