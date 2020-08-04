@@ -23,18 +23,13 @@ class FileReaderWriter
     end
   end
 
-  def character_count(type)
-    text = File.readlines(type).join
+  def input_character_count
+    text = File.readlines(input).join
     text.length
   end
 
-  # def input_character_count
-  #   text = File.readlines(input).join
-  #   text.length
-  # end
-  #
-  # def output_character_count
-  #   text = File.readlines(output).join
-  #   text.length
-  # end
+  def output_character_count
+    text = File.readlines(output).join
+    text.length
+  end
 end
