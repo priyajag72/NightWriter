@@ -40,8 +40,8 @@ class NightReader < Dictionary
     message = @reader.reader
     low = @lower_dictionary
     conversion = low.encode(message)
-    @reader.writer(conversion)
-    return confirmation_message
+    # @reader.writer(conversion)
+    # return confirmation_message
   end
 end
 #
