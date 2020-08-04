@@ -11,10 +11,6 @@ class FileReaderWriter
     File.open(input) { |file| file.read() }
   end
 
-  def input_character_count
-    text = File.readlines(input).join
-    text.length
-  end
 
   def creator
     File.new("./#{output}", "w")
@@ -25,6 +21,11 @@ class FileReaderWriter
     File.open("./#{output}", "w") do |out_file|
       out_file.puts argument
     end
+  end
+
+  def input_character_count
+    text = File.readlines(input).join
+    text.length
   end
 
   def output_character_count

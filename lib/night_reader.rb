@@ -1,7 +1,7 @@
 require_relative "file_reader_writer"
 require_relative "dictionary"
 
-class NightWriter < Dictionary
+class NightReader
 
   attr_reader :reader,
               :lower_dictionary,
@@ -11,6 +11,7 @@ class NightWriter < Dictionary
 
   def initialize
     @reader = FileReaderWriter.new
+
     lowercase = "./dictionary/lowercase_to_international_braille.csv"
     uppercase = "./dictionary/uppercase_to_international_braille.csv"
     punctuation = "./dictionary/punctuation_to_international_braille.csv"
@@ -35,16 +36,15 @@ class NightWriter < Dictionary
     "Created '#{@reader.output}' containing #{character_count(:output)} characters"
   end
 
-  def encode_to_braille
+  def encode_to_english
     message = @reader.reader
     low = @lower_dictionary
-    braille_conversion = low.encode(message)
-    @reader.writer(braille_conversion)
+    conversion = low.encode(message)
+    @reader.writer(conversion)
     return confirmation_message
   end
-
 end
 
-x = NightWriter.new
-x.encode_to_braille
+x = NightReader.new
+x.encode_to_english
 puts x.confirmation_message
