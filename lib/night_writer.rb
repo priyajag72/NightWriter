@@ -1,7 +1,7 @@
 require_relative "dictionary"
 require_relative "file_reader_writer"
 
-class NightWriter < Dictionary
+class NightWriter < Dictionary # probably need a super class = encoder and everything inherits from it (built from methods in dictionary that don't belong)
 
   attr_reader :reader, :lower_dictionary, :upper_dictionary, :punctuation_dictionary, :numbers_dictionary
 
