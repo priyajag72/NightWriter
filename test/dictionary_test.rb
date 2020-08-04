@@ -19,7 +19,7 @@ class DictionaryTest < Minitest::Test
     @dictionary.reader.stubs(:input).returns("message.txt")
     assert_equal FileReaderWriter, @dictionary.reader.class
 
-    assert_equal 13, @dictionary.reader.input_character_count
+    assert_equal 70, @dictionary.reader.input_character_count
   end
 
   def test_it_can_convert_csv_to_braille_dots_integer_hash
@@ -46,10 +46,6 @@ class DictionaryTest < Minitest::Test
   def test_it_can_use_dictionary_with_one_method
     assert_equal "0000..", @dictionary.convert_text_english_to_braille("g")
     assert_equal "0.....0000..", @dictionary.convert_text_english_to_braille("ag")
-  end
-
-  def test_it_can_encode_connected_to_night_writer
-    assert_equal ["0.0.0.0.0.", "00.00.0..0", "....0.0.0."], @dictionary.encode("hello")
   end
 
 end
