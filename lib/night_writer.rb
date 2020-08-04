@@ -1,6 +1,6 @@
 require_relative "dictionary"
-require_relative "file_reader_writer"
-require_relative "matrix"
+# require_relative "file_reader_writer"
+# require_relative "matrix"
 
 
 class NightWriter < Dictionary
@@ -47,7 +47,7 @@ class NightWriter < Dictionary
   end
 
 end
-
-x = NightWriter.new
-x.encode_to_braille
-puts x.confirmation_message
+#
+# x = NightWriter.new
+# x.encode_to_braille
+# puts x.confirmation_message
