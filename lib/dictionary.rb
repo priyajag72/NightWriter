@@ -12,6 +12,27 @@ class Dictionary
     @braille_board = Matrix[[".","."],[".","."],[".","."]]
   end
 
+  def encode(text)
+    text.each_line do |line|
+      convert_braille_matrix_to_string.each do |initial, conversion|
+        text.gsub!(initial, conversion)
+      end
+    end
+    text.gsub!(" ", "SPACEE")
+    text.gsub!("\n", "NEWLNE")
+    convert_to_cell_row1_to_row3(text)
+  end
+
+  def convert_braille_matrix_to_string
+    lowercase_to_dot_hash = Hash.new
+    convert_csv_to_hash.each do |key, value|
+      @braille_board = Matrix[[".","."],[".","."],[".","."]]
+      x = convert(value).to_s.gsub(/Matrix|\[|\]|\,/, "").delete(" ")
+      lowercase_to_dot_hash[key] = x
+    end
+    lowercase_to_dot_hash
+  end
+
   def convert_csv_to_hash
     eng_and_brl_dots_integer_hash = Hash.new
     CSV.foreach(@file_location, headers: false) do |row|
@@ -45,47 +66,26 @@ class Dictionary
     end
   end
 
-  def convert_braille_matrix_to_string
-    lowercase_to_dot_hash = Hash.new
-    convert_csv_to_hash.each do |key, value|
-      @braille_board = Matrix[[".","."],[".","."],[".","."]]
-      x = convert(value).to_s.gsub(/Matrix|\[|\]|\,/, "").delete(" ")
-      lowercase_to_dot_hash[key] = x
-    end
-    lowercase_to_dot_hash
-  end
-
-  def convert_text_english_to_braille(text)
-    convert_braille_matrix_to_string.each do |character, braille_string|
-      text.gsub!(character, braille_string)
-    end
-    text
-  end
-
-  def encode(text)
-    convert_braille_matrix_to_string.each do |k,v|
-      text.gsub!(k, v)
-    end
-    text.gsub!(" ", "SPACEE")
-    text.gsub!("\n", "NEWLNE")
-    convert_to_cell_row1_to_row3(text)
-  end
-
   def convert_to_cell_row1_to_row3(text)
     by_char = text.scan(/.{6}/)
     @row1 = ""
     @row2 = ""
     @row3 = ""
+    encoded_array = []
     by_char.each do |char|
-      if char == "SPACEE"
-        space_allocation
-      elsif char == "NEWLNE"
-        newline_allocation
-      else
+      if char.include?("0" || ".")
         character_allocation(char)
+      elsif char == "SPACEE"
+        space_allocation
+      else
+        newline_allocation
+        encoded_array << print_single_line
+        @row1 = ""
+        @row2 = ""
+        @row3 = ""
       end
     end
-    print_character
+    encoded_array
   end
 
   def character_allocation(char)
@@ -101,16 +101,24 @@ class Dictionary
   end
 
   def newline_allocation
-    @row1 += "\n"
-    @row2 += "\n"
-    @row3 += "\n"
+    @row1 += "--"
+    @row2 += "--"
+    @row3 += "--"
   end
 
-  def print_character
+  def print_single_line
     puts @row1
     puts @row2
     puts @row3
     return [@row1, @row2, @row3]
+  end
+
+
+  def convert_text_english_to_braille(text)
+    convert_braille_matrix_to_string.each do |character, braille_string|
+      text.gsub!(character, braille_string)
+    end
+    text
   end
 
 end
