@@ -33,61 +33,24 @@ class Dictionary
     end
     @encoded_array
   end
-  # ============== HELPERS FOR ITERATON 3 ENCODE ==============
-  def english_row_suite(joined_rows)
-    @line1 = joined_rows[0]
-    @line2 = joined_rows[1]
-    @line3 = joined_rows[2]
+  # ============== ITERATON 3  ==============
+  def braille_to_english(text)
+    braille_suite
+    braille_string_to_braille_integer(text).each do |line, braille_array|
+      convert_braille_by_line(braille_array)
+    end
+    update_character_horizontal_braille
+    replace_braille_char_with_letter
   end
 
-  def remove_braille_character
-    2.times {@line1[0] = ''; @line2[0] = ''; @line3[0] = ''}
-    @character_counter += 1
-  end
-
-  def grab_braille_character
-    @line1.slice(0..1) + @line2.slice(0..1) + @line3.slice(0..1)
-  end
-
+  # ============== HELPERS FOR BRAILLE TO ENGLISH ==============
   def braille_suite
     @horizontal_braille_hash ={}
     @character_counter = 1
     @previous_character = 0
   end
 
-  def braille_to_english(text)
-    braille_suite
-
-    braille_string_to_braille_integer(text).each do |line, braille_rows|
-      max = ((braille_rows[0].chomp.size) + 1) / 2
-      while @character_counter <= max do
-        english_row_suite(braille_rows)
-        if @previous_character == 0
-          @horizontal_braille_hash[@character_counter] = grab_braille_character
-          remove_braille_character
-        else
-          new_line = @previous_character + 1
-          @horizontal_braille_hash[new_line] = "\n"
-          @horizontal_braille_hash[(new_line + @character_counter)] = grab_braille_character
-          remove_braille_character
-        end
-      end
-      @previous_character = (@character_counter - 1)
-      @character_counter = 1
-    end
-    x = convert_braille_matrix_to_string
-    x[" "] = "------"
-    x["\n"] = "\n"
-
-    hash = {}
-    y = @horizontal_braille_hash
-    y.each do |k,v|
-      hash[k] = x.key(v)
-    end
-    x = hash.values.join('') + "\n"
-    return x
-  end
-
+  # UGLY
   def braille_string_to_braille_integer(text)
     text.gsub!("  ", "--")
     braille_text_to_array = text.split(/\n/)
@@ -101,6 +64,62 @@ class Dictionary
     braille_line_hash
   end
 
+  def convert_braille_by_line(array)
+    max = ((array[0].chomp.size) + 1) / 2
+    while @character_counter <= max do
+      english_row_suite(array)
+      line_condition
+    end
+    @previous_character = (@character_counter - 1)
+    @character_counter = 1
+  end
+
+  def english_row_suite(joined_rows)
+    @line1 = joined_rows[0]
+    @line2 = joined_rows[1]
+    @line3 = joined_rows[2]
+  end
+
+  def line_condition
+    if @previous_character == 0
+      @horizontal_braille_hash[@character_counter] = grab_braille_character
+      remove_braille_character
+    else
+      new_line = @previous_character + 1
+      @horizontal_braille_hash[new_line] = "\n"
+      @horizontal_braille_hash[(new_line + @character_counter)] = grab_braille_character
+      remove_braille_character
+    end
+  end
+
+  def grab_braille_character
+    @line1.slice(0..1) + @line2.slice(0..1) + @line3.slice(0..1)
+  end
+
+  def remove_braille_character
+    2.times {@line1[0] = ''; @line2[0] = ''; @line3[0] = ''}
+    @character_counter += 1
+  end
+
+  def update_character_horizontal_braille
+    update_hash = convert_braille_matrix_to_string
+    update_hash[" "] = "------"
+    update_hash["\n"] = "\n"
+    return update_hash
+  end
+
+  def replace_braille_char_with_letter
+    @horizontal_braille_to_letter = {}
+    @horizontal_braille_hash.each do |char_number, horizontal_braille|
+      @horizontal_braille_to_letter[char_number] = update_character_horizontal_braille.key(horizontal_braille)
+    end
+    print_with_syntax
+  end
+
+  def print_with_syntax
+    @horizontal_braille_to_letter.values.join('') + "\n"
+  end
+  
   # ============== HELPERS FOR CONVERT_TO_CELL ENCODE ==============
   def english_character_to_braille(text)
     convert_braille_matrix_to_string.each do |initial, conversion|
