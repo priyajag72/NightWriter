@@ -13,12 +13,15 @@ class Dictionary
   end
 
   def encode(text)
-    if text.include?("\n")
+    if !text[/\p{L}/]
+      braille_to_english(text)
+    elsif text.include?("\n")
       greater_than_forty_characters(text)
+      convert_to_cell(conditionals_end_line(text))
     else
       english_character_to_braille(text)
+      convert_to_cell(conditionals_end_line(text))
     end
-    convert_to_cell(conditionals_end_line(text))
   end
 
   def convert_to_cell(text)
@@ -29,6 +32,58 @@ class Dictionary
       conditional_english_to_braile(char)
     end
     @encoded_array
+  end
+  # ============== HELPERS FOR ITERATON 3 ENCODE ==============
+  def braille_to_english(text)
+    horizontal_braille_hash ={}
+    character_counter = 1
+    previous_character = 0
+    x = convert_from_braille_string_to_braille_integer(text)
+    x.each do |line_from_text, row1_row2_row3|
+      stop_when = ((row1_row2_row3[0].chomp.size) + 2) / 2
+      while character_counter < stop_when do
+        row1 = row1_row2_row3[0]
+        row2 = row1_row2_row3[1]
+        row3 = row1_row2_row3[2]
+        if previous_character == 0
+          horizontal_braille_hash[character_counter] = row1.slice(0..1) + row2.slice(0..1) + row3.slice(0..1)
+          2.times {row1[0] = ''; row2[0] = ''; row3[0] = ''}
+          character_counter += 1
+        else
+          new_line = previous_character + 1
+          horizontal_braille_hash[new_line] = "\n"
+          horizontal_braille_hash[(new_line + character_counter)] = row1.slice(0..1) + row2.slice(0..1) + row3.slice(0..1)
+          2.times {row1[0] = ''; row2[0] = ''; row3[0] = ''}
+          character_counter += 1
+        end
+      end
+      previous_character = (character_counter - 1)
+      character_counter = 1
+    end
+    x = convert_braille_matrix_to_string
+    x[" "] = "------"
+    x["\n"] = "\n"
+
+    hash = {}
+    y = horizontal_braille_hash
+    y.each do |k,v|
+      hash[k] = x.key(v)
+    end
+    x = hash.values.join('') + "\n"
+    return x
+  end
+
+  def convert_from_braille_string_to_braille_integer(text)
+    text.gsub!("  ", "--")
+    braille_text_to_array = text.split(/\n/)
+    braille_line_hash = {}
+    line_counter = 1
+    x = braille_text_to_array.each_slice(3).to_a
+    x.each do |braille_row1_row2_row3|
+      braille_line_hash["line ##{line_counter}"] = braille_row1_row2_row3
+      line_counter += 1
+    end
+    braille_line_hash
   end
 
   # ============== HELPERS FOR CONVERT_TO_CELL ENCODE ==============
@@ -96,7 +151,6 @@ class Dictionary
     puts @row3
     return [@row1, @row2, @row3]
   end
-
   # ============== HELPERS FOR METHOD ENCODE ==============
   def convert_braille_matrix_to_string
     braille_horizontal_dot_hash = Hash.new
