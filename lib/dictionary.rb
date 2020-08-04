@@ -13,14 +13,12 @@ class Dictionary
   end
 
   def encode(text)
-    if !text[/\p{L}/]
-      braille_to_english(text)
-    elsif text.include?("\n")
-      greater_than_forty_characters(text)
-      convert_to_cell(conditionals_end_line(text))
-    else
-      english_character_to_braille(text)
-      convert_to_cell(conditionals_end_line(text))
+    case
+      when !text[/\p{L}/]
+        braille_to_english(text)
+      when text[/\p{L}/]
+        over_forty_char_guard(text)
+        convert_to_cell(conditionals_end_line(text))
     end
   end
 
@@ -50,18 +48,21 @@ class Dictionary
     @previous_character = 0
   end
 
-  # UGLY
   def braille_string_to_braille_integer(text)
-    text.gsub!("  ", "--")
-    braille_text_to_array = text.split(/\n/)
-    braille_line_hash = {}
-    line_counter = 1
-    x = braille_text_to_array.each_slice(3).to_a
-    x.each do |braille_row1_row2_row3|
-      braille_line_hash["line ##{line_counter}"] = braille_row1_row2_row3
-      line_counter += 1
+    update_text_if_braille_and_setup(text)
+    @braille_character_array.each do |braille_row1_row2_row3|
+      @braille_line_hash["line ##{@line_counter}"] = braille_row1_row2_row3
+      @line_counter += 1
     end
-    braille_line_hash
+    @braille_line_hash
+  end
+
+  def update_text_if_braille_and_setup(text)
+    text.gsub!("  ", "--")
+    @braille_text_to_array = text.split(/\n/)
+    @braille_line_hash = {}
+    @line_counter = 1
+    @braille_character_array = @braille_text_to_array.each_slice(3).to_a
   end
 
   def convert_braille_by_line(array)
@@ -119,8 +120,7 @@ class Dictionary
   def print_with_syntax
     @horizontal_braille_to_letter.values.join('') + "\n"
   end
-  
-  # ============== HELPERS FOR CONVERT_TO_CELL ENCODE ==============
+  # ============== HELPERS FOR CONVERT_TO_CELL  ==============
   def english_character_to_braille(text)
     convert_braille_matrix_to_string.each do |initial, conversion|
       text.gsub!(initial, conversion)
@@ -185,7 +185,15 @@ class Dictionary
     puts @row3
     return [@row1, @row2, @row3]
   end
-  # ============== HELPERS FOR METHOD ENCODE ==============
+  # ============== HELPERS FOR ENCODE ==============
+  def over_forty_char_guard(text)
+    if text.include?("\n")
+      greater_than_forty_characters(text)
+    else
+      english_character_to_braille(text)
+    end
+  end
+
   def convert_braille_matrix_to_string
     braille_horizontal_dot_hash = Hash.new
 
