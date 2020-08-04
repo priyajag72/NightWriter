@@ -1,13 +1,18 @@
 require_relative "dictionary"
 require_relative "file_reader_writer"
+require_relative "matrix"
 
-class NightWriter < Dictionary # probably need a super class = encoder and everything inherits from it (built from methods in dictionary that don't belong)
 
-  attr_reader :reader, :lower_dictionary, :upper_dictionary, :punctuation_dictionary, :numbers_dictionary
+class NightWriter < Dictionary
+
+  attr_reader :reader,
+              :lower_dictionary,
+              :upper_dictionary,
+              :punctuation_dictionary,
+              :numbers_dictionary
 
   def initialize
     @reader = FileReaderWriter.new
-
     lowercase = "./dictionary/lowercase_to_international_braille.csv"
     uppercase = "./dictionary/uppercase_to_international_braille.csv"
     punctuation = "./dictionary/punctuation_to_international_braille.csv"
@@ -39,10 +44,10 @@ class NightWriter < Dictionary # probably need a super class = encoder and every
     # does this just encode for each kinda of dictionary and then write the final?? If so, that's suuuuper cool
     @reader.writer(braille_conversion)
     return confirmation_message
-    # require "pry"; binding.pry
   end
 
 end
-#
-# x = NightWriter.new
-# puts x.confirmation_message
+
+x = NightWriter.new
+x.encode_to_braille
+puts x.confirmation_message
