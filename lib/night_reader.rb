@@ -1,7 +1,7 @@
 require_relative "file_reader_writer"
 require_relative "dictionary"
 
-class NightReader
+class NightReader < Dictionary
 
   attr_reader :reader,
               :lower_dictionary,
@@ -44,7 +44,7 @@ class NightReader
     return confirmation_message
   end
 end
-
-x = NightReader.new
-x.encode_to_english
-puts x.confirmation_message
+#
+# x = NightReader.new
+# x.encode_to_english
+# puts x.confirmation_message

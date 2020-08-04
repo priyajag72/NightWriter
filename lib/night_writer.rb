@@ -44,7 +44,7 @@ class NightWriter < Dictionary
   end
 
 end
-
-x = NightWriter.new
-x.encode_to_braille
-puts x.confirmation_message
+#
+# x = NightWriter.new
+# x.encode_to_braille
+# puts x.confirmation_message
