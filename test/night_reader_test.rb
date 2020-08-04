@@ -20,4 +20,8 @@ class NightReaderTest < Minitest::Test
     # assert_equal 225, @night_reader.reader.input_character_count
   end
 
+  def test_it_inherits_from_dictionary
+    assert_equal Dictionary, @night_reader.lower_dictionary.class
+  end
+
 end
